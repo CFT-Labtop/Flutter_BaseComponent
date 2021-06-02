@@ -15,8 +15,10 @@ class Util {
   static const Color mainColor = Color.fromRGBO(0, 179, 141, 1);
   static const Color outlineColor = Colors.white;
   static const Color focusedOutlineColor = Colors.white;
+  static double smallPhoneSize = 320;
   static double smallPadSize = 768;
   static double padSize = 1024;
+  static double smallPhoneRate = .7;
   static double phoneRate = 1;
   static double smallPadRate = 1.2;
   static double padRate = 1.5;
@@ -24,7 +26,9 @@ class Util {
 
   static double responsiveSize(BuildContext context, double size) {
     double screenWidth = MediaQuery.of(context).size.width;
-    if (screenWidth <= smallPadSize)
+    if (screenWidth <= smallPhoneSize)
+      return size * smallPhoneRate;
+    else if (screenWidth <= smallPadSize)
       return size * phoneRate;
     else if (screenWidth <= padRate)
       return size * smallPadRate;
@@ -109,14 +113,14 @@ class Util {
         numCharacter, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
   }
 
-  static showToast(String text) {
+  static showToast(String text, Color? color, Color? fontColor) {
     Fluttertoast.showToast(
         msg: text,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 2,
-        backgroundColor: Util.mainColor,
-        textColor: Colors.white,
+        backgroundColor: color??Util.mainColor,
+        textColor: fontColor??Colors.white,
         fontSize: 16.0);
   }
 

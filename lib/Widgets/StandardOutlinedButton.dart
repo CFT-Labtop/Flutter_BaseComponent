@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_basecomponent/Util.dart';
 
 
 class StandardOutlinedButton extends StatelessWidget {
@@ -17,9 +18,9 @@ class StandardOutlinedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
-      child: Text(this.text, style: TextStyle(color: this.fontColor)),
+      child: Text(this.text, style: TextStyle(color: this.fontColor, fontSize: Util.responsiveSize(context, 24))),
       style: OutlinedButton.styleFrom(
-          padding: EdgeInsets.only(top: 16, bottom: 16, left: 28, right: 28),
+          padding: EdgeInsets.only(top: Util.responsiveSize(context, 16), bottom: Util.responsiveSize(context, 16), left: Util.responsiveSize(context, 28), right: Util.responsiveSize(context, 28)),
           side: BorderSide(width: 2, color: Color(0xffffffff)),
           shape: new RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(10.0))),
