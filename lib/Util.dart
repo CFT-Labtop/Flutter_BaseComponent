@@ -20,8 +20,8 @@ class Util {
   static double padSize = 1024;
   static double smallPhoneRate = .7;
   static double phoneRate = 1;
-  static double smallPadRate = 1.2;
-  static double padRate = 1.5;
+  static double smallPadRate = 1.15;
+  static double padRate = 1.3;
   static SharedPreferences? sharedPreferences;
 
   static double responsiveSize(BuildContext context, double size) {
