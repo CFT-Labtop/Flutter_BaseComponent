@@ -7,8 +7,8 @@ abstract class BaseRouter {
     baseRouter.fluroRouter = new FluroRouter();
     return baseRouter;
   }
-  Future<dynamic> goToPage(BuildContext context, Pages page, {TransitionType? type, bool clear = false, String parameters = "", RouteSettings? routeSettings}) async {
-    return await this.fluroRouter!.navigateTo(context, "/" + page.getName() + parameters,transition: type ?? TransitionType.native,replace: false,clearStack: clear, routeSettings: routeSettings);
+  Future<dynamic> goToPage(BuildContext context, Pages page, {TransitionType? type, bool replace = false, bool clear = false, String parameters = "", RouteSettings? routeSettings}) async {
+    return await this.fluroRouter!.navigateTo(context, "/" + page.getName() + parameters,transition: type ?? TransitionType.native,replace: replace,clearStack: clear, routeSettings: routeSettings);
   }
 }
 

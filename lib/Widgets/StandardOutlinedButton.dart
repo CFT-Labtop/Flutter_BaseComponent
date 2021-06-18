@@ -8,7 +8,7 @@ class StandardOutlinedButton extends StatelessWidget {
   final Color fontColor;
   final Color borderColor;
   const StandardOutlinedButton(
-      {required Key key,
+      {required Key? key,
       this.onPress,
       required this.text,
       this.fontColor = Colors.white,
@@ -18,7 +18,7 @@ class StandardOutlinedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
-      child: Text(this.text, style: TextStyle(color: this.fontColor, fontSize: Util.responsiveSize(context, 24))),
+      child: Text(this.text, style: TextStyle(color: this.fontColor, fontSize: Util.responsiveSize(context, 16))),
       style: OutlinedButton.styleFrom(
           padding: EdgeInsets.only(top: Util.responsiveSize(context, 16), bottom: Util.responsiveSize(context, 16), left: Util.responsiveSize(context, 28), right: Util.responsiveSize(context, 28)),
           side: BorderSide(width: 2, color: Color(0xffffffff)),
