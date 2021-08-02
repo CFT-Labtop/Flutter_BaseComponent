@@ -9,6 +9,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Util {
@@ -36,6 +37,39 @@ class Util {
       return size * padRate;
   }
 
+  static Future<void> checkCameraPermission(BuildContext context, {Function? onGranted, Function? onFailed}) async {
+    PermissionStatus status = await Permission.camera.status;
+     if (status.isDenied) {
+      if (await Permission.camera.request().isGranted) {
+        if(onGranted != null)
+          onGranted();
+      }
+    } else if (status.isPermanentlyDenied) {
+      if(onFailed != null){
+        onFailed();
+      }else{
+        showPlatformDialog(
+          context: context,
+          builder: (_) => PlatformAlertDialog(
+          title: Text("Camera Permission".tr()),
+          content: Text('Request For Camera Permission For Scanning QR Code'.tr()),
+          actions: <Widget>[
+            PlatformDialogAction(
+              child: PlatformText("Deny".tr()),
+                onPressed: () => Navigator.pop(context),
+            ),
+              PlatformDialogAction(
+                child: PlatformText("Allow".tr()),
+                onPressed: () {
+                  openAppSettings();
+                  Navigator.pop(context);
+                },
+              ),
+          ]));
+      }
+    }
+  }
+
   static double ratioHeight(BuildContext context, double ratio) {
     return MediaQuery.of(context).size.height * ratio;
   }
@@ -48,7 +82,7 @@ class Util {
     return DateFormat('yyyy-MM-dd').format(date);
   }
 
-  static void showAlertDialog(BuildContext context, String content,{String? title}) {
+  static void showAlertDialog(BuildContext context, String content,{String? title, Function? onPress}) {
     showPlatformDialog(
         context: context,
         builder: (_) => PlatformAlertDialog(
@@ -58,7 +92,10 @@ class Util {
                 PlatformDialogAction(
                   child: PlatformText('Dismiss'.tr()),
                   onPressed: () {
-                    Navigator.pop(context);
+                    if(onPress == null)
+                      Navigator.pop(context);
+                    else
+                      onPress();
                   },
                 ),
               ],

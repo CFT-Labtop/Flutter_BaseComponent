@@ -1,6 +1,6 @@
 name: flutter_basecomponent
 description: A new Flutter package project.
-version: 0.0.1
+version: 0.0.2
 repository: https://github.com/ChengWaiLim/Flutter_BaseComponent
 
 environment:
@@ -17,6 +17,7 @@ dependencies:
   flutter_platform_widgets: ^1.9.0
   fluttertoast: ^8.0.7
   path_provider: ^2.0.2
+  permission_handler: ^8.1.4+2
   shared_preferences: ^2.0.6
 
 dev_dependencies:
