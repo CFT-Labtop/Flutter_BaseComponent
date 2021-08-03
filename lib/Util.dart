@@ -38,11 +38,16 @@ class Util {
   }
 
   static Future<void> checkCameraPermission(BuildContext context, {Function? onGranted, Function? onFailed}) async {
-    PermissionStatus status = await Permission.camera.status;
-     if (status.isDenied) {
-      if (await Permission.camera.request().isGranted) {
-        if(onGranted != null)
+    PermissionStatus status = await Permission.camera.status; 
+    if(status.isGranted){
+      if(onGranted != null){
           onGranted();
+        }
+    }else if (status.isDenied) {
+      if (await Permission.camera.request().isGranted) {
+        if(onGranted != null){
+          onGranted();
+        }
       }
     } else if (status.isPermanentlyDenied) {
       if(onFailed != null){
