@@ -37,40 +37,43 @@ class Util {
       return size * padRate;
   }
 
-  static Future<void> checkCameraPermission(BuildContext context, {Function? onGranted, Function? onFailed}) async {
-    PermissionStatus status = await Permission.camera.status; 
-    if(status.isGranted){
-      if(onGranted != null){
-          onGranted();
-        }
-    }else if (status.isDenied) {
+  static Future<void> checkCameraPermission(BuildContext context,
+      {Function? onGranted, Function? onFailed}) async {
+    PermissionStatus status = await Permission.camera.status;
+    if (status.isGranted) {
+      if (onGranted != null) {
+        onGranted();
+      }
+    } else if (status.isDenied) {
       if (await Permission.camera.request().isGranted) {
-        if(onGranted != null){
+        if (onGranted != null) {
           onGranted();
         }
       }
     } else if (status.isPermanentlyDenied) {
-      if(onFailed != null){
+      if (onFailed != null) {
         onFailed();
-      }else{
+      } else {
         showPlatformDialog(
-          context: context,
-          builder: (_) => PlatformAlertDialog(
-          title: Text("Camera Permission".tr()),
-          content: Text('Request For Camera Permission For Scanning QR Code'.tr()),
-          actions: <Widget>[
-            PlatformDialogAction(
-              child: PlatformText("Deny".tr()),
-                onPressed: () => Navigator.pop(context),
-            ),
-              PlatformDialogAction(
-                child: PlatformText("Allow".tr()),
-                onPressed: () {
-                  openAppSettings();
-                  Navigator.pop(context);
-                },
-              ),
-          ]));
+            context: context,
+            builder: (_) => PlatformAlertDialog(
+                    title: Text("Camera Permission".tr()),
+                    content: Text(
+                        'Request For Camera Permission For Scanning QR Code'
+                            .tr()),
+                    actions: <Widget>[
+                      PlatformDialogAction(
+                        child: PlatformText("Deny".tr()),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                      PlatformDialogAction(
+                        child: PlatformText("Allow".tr()),
+                        onPressed: () {
+                          openAppSettings();
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ]));
       }
     }
   }
@@ -87,7 +90,8 @@ class Util {
     return DateFormat('yyyy-MM-dd').format(date);
   }
 
-  static void showAlertDialog(BuildContext context, String content,{String? title, Function? onPress}) {
+  static void showAlertDialog(BuildContext context, String content,
+      {String? title, Function? onPress}) {
     showPlatformDialog(
         context: context,
         builder: (_) => PlatformAlertDialog(
@@ -97,7 +101,7 @@ class Util {
                 PlatformDialogAction(
                   child: PlatformText('Dismiss'.tr()),
                   onPressed: () {
-                    if(onPress == null)
+                    if (onPress == null)
                       Navigator.pop(context);
                     else
                       onPress();
@@ -107,21 +111,23 @@ class Util {
             ));
   }
 
-  static void showLoadingDialog(BuildContext context){
-    showDialog(context: context, 
-    barrierDismissible: false,
-    builder: (BuildContext context){
-      return Dialog(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        child: Center(
-          child: PlatformCircularProgressIndicator(),
-        ),
-      );
-    });
+  static void showLoadingDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            child: Center(
+              child: PlatformCircularProgressIndicator(),
+            ),
+          );
+        });
   }
 
-  static  void showConfirmDialog(BuildContext context,{String title = "", String content = "", required VoidCallback onPress}) {
+  static void showConfirmDialog(BuildContext context,
+      {String title = "", String content = "", required VoidCallback onPress}) {
     showPlatformDialog(
       context: context,
       builder: (_) => PlatformAlertDialog(
@@ -146,7 +152,8 @@ class Util {
     );
   }
 
-  static Future<File> createFileFromString(String encodedStr, String ext) async {
+  static Future<File> createFileFromString(
+      String encodedStr, String ext) async {
     try {
       Uint8List bytes = base64.decode(encodedStr);
       String dir = (await getApplicationDocumentsDirectory()).path;
@@ -175,35 +182,89 @@ class Util {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 2,
-        backgroundColor: color??Util.mainColor,
-        textColor: fontColor??Colors.white,
+        backgroundColor: color ?? Util.mainColor,
+        textColor: fontColor ?? Colors.white,
         fontSize: 16.0);
   }
 
-  static hashPassword(String password){
+  static hashPassword(String password) {
     return sha256.convert(utf8.encode(password));
   }
 
-  static bool isAuthenticated(){
+  static bool isAuthenticated() {
     return Util.sharedPreferences?.getObject("currentUser") != "";
   }
 
-  static void clearUser() async{
+  static void clearUser() async {
     await Util.sharedPreferences?.setString("currentUser", "");
     await Util.sharedPreferences?.setString("token", "");
   }
+
+  static void showModalSheet(BuildContext context, String title, Widget Function(BuildContext context, StateSetter setState) builder,
+      {Widget? leading, Widget? actions, Color? colorTone}) {
+    showPlatformModalSheet(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+            return Material(
+              color: Colors.transparent,
+              child: Container(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(20.0),
+                        topLeft: Radius.circular(20)),
+                    color: Color(0xffDDDDDD),
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: Util.responsiveSize(context, 56.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            leading ??
+                                IconButton(
+                                  icon: Icon(Icons.arrow_back,
+                                      color: colorTone ?? Colors.blue),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                            Text(
+                              title,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: Util.responsiveSize(context, 20)),
+                            ),
+                            // Expanded(child: SizedBox()),
+                            actions ??
+                                SizedBox(
+                                  width: 24,
+                                ),
+                          ],
+                        ),
+                      ),
+                      // Text("Header"),
+                      Expanded(child: builder(context, setState)),
+                    ],
+                  )),
+            );
+          });
+        });
+  }
 }
 
-
 extension SharedPreferenceExtension on SharedPreferences {
-  Future<bool> setObject(String key,  dynamic value) async{
+  Future<bool> setObject(String key, dynamic value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setString(key, jsonEncode(value.toJson()));
   }
 
-  Future<Map<String, dynamic>> getObject<T extends dynamic>(String key) async{
+  Future<Map<String, dynamic>> getObject<T extends dynamic>(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(prefs.getString(key) == null) throw Exception("Getting Null In SharedPreference");
+    if (prefs.getString(key) == null)
+      throw Exception("Getting Null In SharedPreference");
     return jsonDecode(prefs.getString(key)!);
   }
 }
