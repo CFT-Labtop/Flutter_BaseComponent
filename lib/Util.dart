@@ -201,54 +201,56 @@ class Util {
   }
 
   static void showModalSheet(BuildContext context, String title, Widget Function(BuildContext context, StateSetter setState) builder,
-      {Widget? leading, Widget? actions, Color? colorTone}) {
+      {Widget? leading, Widget? actions, Color? colorTone, double height = 0.8}) {
     showPlatformModalSheet(
         context: context,
         builder: (context) {
           return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
             return Material(
               color: Colors.transparent,
-              child: Container(
-                  height: MediaQuery.of(context).size.height * 0.8,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(20.0),
-                        topLeft: Radius.circular(20)),
-                    color: Color(0xffDDDDDD),
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: Util.responsiveSize(context, 56.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            leading ??
-                                IconButton(
-                                  icon: Icon(Icons.arrow_back,
-                                      color: colorTone ?? Colors.blue),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                            Text(
-                              title,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: Util.responsiveSize(context, 20)),
-                            ),
-                            // Expanded(child: SizedBox()),
-                            actions ??
-                                SizedBox(
-                                  width: 24,
-                                ),
-                          ],
+              child: IntrinsicHeight(
+                child: Container(
+                    height: MediaQuery.of(context).size.height * height,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(20.0),
+                          topLeft: Radius.circular(20)),
+                      color: Color(0xffDDDDDD),
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: Util.responsiveSize(context, 56.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              leading ??
+                                  IconButton(
+                                    icon: Icon(Icons.arrow_back,
+                                        color: colorTone ?? Colors.blue),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                              Text(
+                                title,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: Util.responsiveSize(context, 20)),
+                              ),
+                              // Expanded(child: SizedBox()),
+                              actions ??
+                                  SizedBox(
+                                    width: 24,
+                                  ),
+                            ],
+                          ),
                         ),
-                      ),
-                      // Text("Header"),
-                      Expanded(child: builder(context, setState)),
-                    ],
-                  )),
+                        // Text("Header"),
+                        Expanded(child: builder(context, setState)),
+                      ],
+                    )),
+              ),
             );
           });
         });
