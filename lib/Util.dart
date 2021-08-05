@@ -200,23 +200,26 @@ class Util {
     await Util.sharedPreferences?.setString("token", "");
   }
 
-  static void showModalSheet(BuildContext context, String title, Widget Function(BuildContext context, StateSetter setState) builder,
-      {Widget? leading, Widget? actions, Color? colorTone, double height = 0.8}) {
-    showPlatformModalSheet(
+  static void showModalSheet(BuildContext context, String title,
+      Widget Function(BuildContext context, StateSetter setState) builder,
+      {Widget? leading,
+      Widget? actions,
+      Color? colorTone,
+      double height = 0.8}) {
+    showModalBottomSheet(
         context: context,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
         builder: (context) {
-          return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
-            return Material(
-              color: Colors.transparent,
-              child: IntrinsicHeight(
-                child: Container(
-                    height: MediaQuery.of(context).size.height * height,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20.0),
-                          topLeft: Radius.circular(20)),
-                      color: Color(0xffDDDDDD),
-                    ),
+          return Wrap(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height * height,
+                child: StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+                  return Material(
+                    color: Colors.transparent,
                     child: Column(
                       children: [
                         Container(
@@ -249,10 +252,12 @@ class Util {
                         // Text("Header"),
                         Expanded(child: builder(context, setState)),
                       ],
-                    )),
+                    ),
+                  );
+                }),
               ),
-            );
-          });
+            ],
+          );
         });
   }
 }
