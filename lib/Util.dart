@@ -37,6 +37,46 @@ class Util {
       return size * padRate;
   }
 
+    static Future<void> checkGPSPermission(BuildContext context,{Function? onGranted, Function? onFailed}) async {
+    PermissionStatus status = await Permission.location.status;
+    if (status.isGranted) {
+      if (onGranted != null) {
+        onGranted();
+      }
+    } else if (status.isDenied) {
+      if (await Permission.location.request().isGranted) {
+        if (onGranted != null) {
+          onGranted();
+        }
+      }
+    } else if (status.isPermanentlyDenied) {
+      if (onFailed != null) {
+        onFailed();
+      } else {
+        showPlatformDialog(
+            context: context,
+            builder: (_) => PlatformAlertDialog(
+                    title: Text("GPS Permission".tr()),
+                    content: Text(
+                        'Request For GPS Permission For Scanning QR Code'
+                            .tr()),
+                    actions: <Widget>[
+                      PlatformDialogAction(
+                        child: PlatformText("Deny".tr()),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                      PlatformDialogAction(
+                        child: PlatformText("Allow".tr()),
+                        onPressed: () {
+                          openAppSettings();
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ]));
+      }
+    }
+  }
+
   static Future<void> checkCameraPermission(BuildContext context,
       {Function? onGranted, Function? onFailed}) async {
     PermissionStatus status = await Permission.camera.status;
