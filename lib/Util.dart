@@ -49,7 +49,8 @@ class Util {
           onGranted();
         }
       }
-    } else if (status.isPermanentlyDenied) {
+    }
+    if (status.isPermanentlyDenied || status.isDenied || status.isRestricted || status.isLimited) {
       if (onFailed != null) {
         onFailed();
       } else {
