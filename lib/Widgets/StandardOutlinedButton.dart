@@ -8,7 +8,7 @@ class StandardOutlinedButton extends StatelessWidget {
   final Color fontColor;
   final Color borderColor;
   const StandardOutlinedButton(
-      {required Key? key,
+      {Key? key,
       this.onPress,
       required this.text,
       this.fontColor = Colors.white,
