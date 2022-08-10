@@ -37,7 +37,8 @@ class Util {
       return size * padRate;
   }
 
-    static Future<void> checkGPSPermission(BuildContext context,{Function? onGranted, Function? onFailed}) async {
+  static Future<void> checkGPSPermission(BuildContext context,
+      {Function? onGranted, Function? onFailed}) async {
     PermissionStatus status = await Permission.location.status;
     if (status.isGranted) {
       if (onGranted != null) {
@@ -50,7 +51,10 @@ class Util {
         }
       }
     }
-    if (status.isPermanentlyDenied || status.isDenied || status.isRestricted || status.isLimited) {
+    if (status.isPermanentlyDenied ||
+        status.isDenied ||
+        status.isRestricted ||
+        status.isLimited) {
       if (onFailed != null) {
         onFailed();
       } else {
@@ -59,8 +63,7 @@ class Util {
             builder: (_) => PlatformAlertDialog(
                     title: Text("GPS Permission".tr()),
                     content: Text(
-                        'Request For GPS Permission For Scanning QR Code'
-                            .tr()),
+                        'Request For GPS Permission For Scanning QR Code'.tr()),
                     actions: <Widget>[
                       PlatformDialogAction(
                         child: PlatformText("Deny".tr()),
@@ -258,7 +261,8 @@ class Util {
             children: [
               Container(
                 height: MediaQuery.of(context).size.height * height,
-                child: StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+                child: StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setState) {
                   return Material(
                     color: Colors.transparent,
                     child: Column(
